@@ -1,0 +1,375 @@
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                     📁 COMPLETE FOLDER STRUCTURE                          ║
+║                    Automated Fact-Checker System                          ║
+║                                                                            ║
+║  Total: 45+ files | 6 main directories | Fully organized                 ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+
+c:\FAKE NEWS\                                          
+│
+├── 📖 DOCUMENTATION & GUIDES
+│   ├── START_HERE.md                   ⭐ READ THIS FIRST (Complete overview)
+│   ├── QUICKSTART.md                   (5-minute quick start)
+│   ├── README.md                       (Full project documentation)
+│   ├── FILE_INDEX.md                   (File-by-file guide)
+│   ├── PROJECT_SUMMARY.txt             (Technical summary)
+│   ├── SYSTEM_ARCHITECTURE.txt         (Architecture diagrams)
+│   └── (This file)
+│
+├── ⚙️  CONFIGURATION
+│   ├── config.py                       (Main configuration)
+│   └── requirements.txt                (Python dependencies)
+│
+├── 📊 DATA/ (Your Datasets)
+│   ├── Fake.csv                        ← Your data (place here)
+│   ├── True.csv                        ← Your data (place here)
+│   ├── combined_data.csv               ← Auto-generated
+│   ├── cleaned_data.csv                ← Auto-generated
+│   ├── embeddings.pkl                  ← Auto-generated
+│   ├── labels.pkl                      ← Auto-generated
+│   ├── X_test.npy                      ← Auto-generated
+│   ├── y_test.npy                      ← Auto-generated
+│   └── README.md                       (Data documentation)
+│
+├── 🧠 NOTEBOOKS/ (8-Step Training Pipeline - Execute in order!)
+│   │
+│   ├── Step_0_Install.py
+│   │   └─ Purpose: Install all required packages
+│   │      Run: python notebooks/Step_0_Install.py
+│   │      Input: Internet connection
+│   │      Output: All packages installed ✅
+│   │
+│   ├── Step_1_Load_Data.py
+│   │   └─ Purpose: Load Fake.csv + True.csv, combine them
+│   │      Run: python notebooks/Step_1_Load_Data.py
+│   │      Input: Fake.csv, True.csv
+│   │      Output: combined_data.csv (10k+ records)
+│   │
+│   ├── Step_2_Language_Detection.py
+│   │   └─ Purpose: Detect languages in sample (En/Ta/Hi)
+│   │      Run: python notebooks/Step_2_Language_Detection.py
+│   │      Input: combined_data.csv
+│   │      Output: Language statistics
+│   │
+│   ├── Step_3_Text_Cleaning.py
+│   │   └─ Purpose: Clean text (remove URLs, stopwords, etc)
+│   │      Run: python notebooks/Step_3_Text_Cleaning.py
+│   │      Input: combined_data.csv
+│   │      Output: cleaned_data.csv
+│   │
+│   ├── Step_4_Embeddings.py
+│   │   └─ Purpose: Generate BERT embeddings (384-dim vectors)
+│   │      Run: python notebooks/Step_4_Embeddings.py
+│   │      Input: cleaned_data.csv
+│   │      Output: embeddings.pkl, labels.pkl
+│   │
+│   ├── Step_5_FAISS_Index.py
+│   │   └─ Purpose: Build FAISS vector similarity index
+│   │      Run: python notebooks/Step_5_FAISS_Index.py
+│   │      Input: embeddings.pkl, cleaned_data.csv
+│   │      Output: faiss_index.pkl, facts.pkl
+│   │
+│   ├── Step_6_Train_Model.py
+│   │   └─ Purpose: Train Logistic Regression classifier
+│   │      Run: python notebooks/Step_6_Train_Model.py
+│   │      Input: embeddings.pkl, labels.pkl
+│   │      Output: model.pkl (trained model)
+│   │
+│   ├── Step_7_Evaluation.py
+│   │   └─ Purpose: Evaluate model performance metrics
+│   │      Run: python notebooks/Step_7_Evaluation.py
+│   │      Input: model.pkl, test data
+│   │      Output: Confusion matrix, accuracy, F1-score
+│   │
+│   ├── Step_8_Save_Models.py
+│   │   └─ Purpose: Verify all components saved
+│   │      Run: python notebooks/Step_8_Save_Models.py
+│   │      Input: All trained components
+│   │      Output: ✅ Ready for deployment!
+│   │
+│   └── README.md                       (Training pipeline documentation)
+│       Contains:
+│       • Step-by-step instructions
+│       • Expected outputs
+│       • Time estimates
+│       • Troubleshooting tips
+│
+├── 🤖 SRC/ (Core Machine Learning Modules)
+│   │
+│   ├── __init__.py
+│   │   └─ Package initializer
+│   │
+│   ├── language_detector.py
+│   │   └─ Functions:
+│   │      • detect_language(text)         → 'en'/'ta'/'hi'/'unknown'
+│   │      • translate_to_english(text)    → English text
+│   │      • get_language_name(code)       → Display name
+│   │
+│   ├── text_processor.py
+│   │   └─ Functions:
+│   │      • clean_text(text)              → Cleaned text
+│   │      • preprocess_text(text)         → Full pipeline
+│   │      Removes:
+│   │      - URLs and emails
+│   │      - Special characters
+│   │      - Stopwords (the, a, is, etc)
+│   │      - Extra whitespace
+│   │
+│   ├── embedder.py
+│   │   └─ Functions:
+│   │      • get_embeddings(texts)         → Array (N, 384)
+│   │      • get_single_embedding(text)    → Array (384,)
+│   │      • cosine_similarity(v1, v2)    → Score (0-1)
+│   │      Uses: Sentence Transformers (BERT)
+│   │
+│   ├── fact_checker.py
+│   │   └─ Main Class: FactChecker
+│   │      Methods:
+│   │      • __init__()                    ← Load all models
+│   │      • check_fact(text)              ← Main prediction
+│   │      Pipeline:
+│   │      1. Detect language
+│   │      2. Translate if needed
+│   │      3. Clean text
+│   │      4. Generate embedding
+│   │      5. FAISS search (find similar)
+│   │      6. ML prediction
+│   │      7. Format results
+│   │      Returns: Complete prediction dict
+│   │
+│   └── utils.py
+│       └─ Helper Functions:
+│          • ensure_models_exist()        → Check if models ready
+│          • get_project_stats()          → Project information
+│
+├── 💾 MODELS/ (Auto-Generated After Training)
+│   │
+│   ├── model.pkl                        (~1-2 MB)
+│   │   └─ Trained Logistic Regression classifier
+│   │      • Predicts: Real (1) or Fake (0)
+│   │      • Takes: 384-dim embedding vector
+│   │      • Outputs: Prediction + confidence
+│   │
+│   ├── faiss_index.pkl                  (~30-50 MB)
+│   │   └─ FAISS Vector Database Index
+│   │      • Contains: All embeddings indexed
+│   │      • Enables: Fast K-NN search (< 10ms)
+│   │      • Returns: Top K similar embeddings
+│   │
+│   ├── facts.pkl                        (~5-10 MB)
+│   │   └─ Knowledge Base (Original texts)
+│   │      • Contains: All original news articles
+│   │      • Used to: Display similar facts
+│   │      • Format: List of strings
+│   │
+│   ├── embedder.pkl                     (~0.5 MB)
+│   │   └─ Pre-trained BERT Model
+│   │      • Model: all-MiniLM-L6-v2
+│   │      • Dimension: 384
+│   │      • Purpose: Text → Vector conversion
+│   │
+│   └── README.md                        (Models documentation)
+│       • How models used
+│       • File dependencies
+│       • Loading instructions
+│       • Performance metrics
+│
+├── 🖥️  WEB_APP/ (Complete Web Application)
+│   │
+│   ├── 📄 HTML/ (Frontend User Interface)
+│   │   │
+│   │   ├── index.html (~400 lines)
+│   │   │   └─ Semantic HTML5 structure
+│   │   │      • Header with gradient
+│   │   │      • Input section (textarea)
+│   │   │      • Results section (hidden initially)
+│   │   │      • How it works guide
+│   │   │      • Footer
+│   │   │      • Toast notifications
+│   │   │      • Beautiful layout
+│   │   │
+│   │   ├── 🎨 CSS/
+│   │   │   └─ style.css (~600 lines)
+│   │   │      Variables:
+│   │   │      • Colors (primary, secondary, success, danger, etc)
+│   │   │      • Shadows and effects
+│   │   │      • Transitions and animations
+│   │   │      Sections:
+│   │   │      • Header styling (gradient background)
+│   │   │      • Card styling (shadow and hover effects)
+│   │   │      • Input styling (focus states)
+│   │   │      • Button styling (primary, secondary, outline)
+│   │   │      • Results display (animations)
+│   │   │      • Confidence meter (progress bar)
+│   │   │      • Facts section (list styling)
+│   │   │      • Responsive media queries
+│   │   │      • Mobile optimization
+│   │   │
+│   │   └─ 🔧 JS/
+│   │       └─ script.js (~400 lines)
+│   │          Functions:
+│   │          • checkFact()              ← Main prediction call
+│   │          • displayResults(data)     ← Render results
+│   │          • displayFacts(facts)      ← Show similar facts
+│   │          • resetForm()              ← Clear form
+│   │          • shareResult()            ← Share functionality
+│   │          • showError(msg)           ← Error toast
+│   │          • showSuccess(msg)         ← Success toast
+│   │          Event Listeners:
+│   │          • Check button click
+│   │          • Reset button click
+│   │          • Share button click
+│   │          • Keyboard shortcuts
+│   │          • DOM manipulation
+│   │
+│   ├── ⚙️  BACKEND/
+│   │   └─ app.py (~300 lines)
+│   │      Flask REST API Server
+│   │      Endpoints:
+│   │      • GET  /                       ← Serve HTML
+│   │      • GET  /api/health             ← Health check
+│   │      • GET  /api/info               ← Project info
+│   │      • POST /api/check-fact         ← Single prediction
+│   │      • POST /api/check-facts-batch  ← Multiple predictions
+│   │      Features:
+│   │      • CORS enabled
+│   │      • JSON responses
+│   │      • Error handling
+│   │      • Input validation
+│   │      • Production patterns
+│   │
+│   ├── streamlit_app.py (~250 lines)
+│   │   └─ Alternative Streamlit Interface
+│   │      • Text input area
+│   │      • Real-time prediction
+│   │      • Confidence display
+│   │      • Similar facts
+│   │      • Sidebar documentation
+│   │      • Beautiful visualization
+│   │      Run: streamlit run web_app/streamlit_app.py
+│   │
+│   └── README.md
+│       • API documentation
+│       • Running instructions
+│       • Deployment guide
+│       • Configuration
+│
+└── 📋 ROOT FILES
+    ├── config.py (~80 lines)
+    │   └─ Central Configuration
+    │      • File paths
+    │      • Model parameters
+    │      • ML settings
+    │      • Language support
+    │      • Flask settings
+    │
+    └── requirements.txt
+        └─ Python Dependencies
+           Core ML:
+           • pandas, numpy, scikit-learn
+           • sentence-transformers
+           • faiss-cpu
+           • nltk, langdetect
+           Web:
+           • flask, flask-cors
+           • streamlit
+           • requests
+           • python-dotenv
+
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                         HOW TO NAVIGATE                                    ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+FOR QUICK START:
+  1. Read: START_HERE.md
+  2. Read: QUICKSTART.md
+  3. Run: python notebooks/Step_0_Install.py
+  4. Run: python notebooks/Step_1_Load_Data.py
+  5. ... (continue through Step 8)
+  6. Run: python web_app/backend/app.py
+
+FOR UNDERSTANDING:
+  • Read FILE_INDEX.md for file explanations
+  • Read SYSTEM_ARCHITECTURE.txt for flow
+  • Read notebooks/README.md for training
+  • Read web_app/README.md for web app
+
+FOR INTEGRATION:
+  • Study src/fact_checker.py (main API)
+  • Study web_app/backend/app.py (REST API)
+  • Study web_app/html/js/script.js (frontend)
+  • Study config.py (settings)
+
+FOR CUSTOMIZATION:
+  • Modify config.py for settings
+  • Modify web_app/html/css/style.css for UI colors
+  • Modify html/index.html for layout
+  • Modify src/ files for logic
+
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                    FILE EXECUTION ORDER                                    ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+TRAINING PHASE (Run in this order): 
+  1. python notebooks/Step_0_Install.py
+  2. python notebooks/Step_1_Load_Data.py
+  3. python notebooks/Step_2_Language_Detection.py
+  4. python notebooks/Step_3_Text_Cleaning.py
+  5. python notebooks/Step_4_Embeddings.py
+  6. python notebooks/Step_5_FAISS_Index.py
+  7. python notebooks/Step_6_Train_Model.py
+  8. python notebooks/Step_7_Evaluation.py
+  9. python notebooks/Step_8_Save_Models.py
+
+TESTING PHASE:
+  10. python web_app/backend/app.py  (Option A: Flask)
+      OR
+      streamlit run web_app/streamlit_app.py (Option B: Streamlit)
+
+INTEGRATION PHASE:
+  • Import from src.fact_checker
+  • Call predictions programmatically
+  • Integrate with other systems
+
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                    QUICK REFERENCE                                         ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+START HERE:
+  → START_HERE.md (complete overview)
+
+QUICK START (5 min):
+  → QUICKSTART.md
+
+FULL DOCUMENTATION:
+  → README.md
+
+FILE GUIDE:
+  → FILE_INDEX.md
+
+ARCHITECTURE:
+  → SYSTEM_ARCHITECTURE.txt
+
+FOR DATA:
+  → Place Fake.csv, True.csv in /data
+
+FOR TRAINING:
+  → Run /notebooks scripts in order
+
+FOR WEB APP:
+  → Run python web_app/backend/app.py
+  → Or: streamlit run web_app/streamlit_app.py
+
+FOR CUSTOMIZATION:
+  → Edit config.py
+
+FOR INTEGRATION:
+  → Use src/fact_checker.py
+
+
+Made with ❤️ for better informed societies

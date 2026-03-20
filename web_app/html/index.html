@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Veritas - Royal Fact-Checker AI ✨</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Lora:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="royal-theme">
+    <!-- Background Gradient Animation -->
+    <div class="bg-animation"></div>
+    
+    <div class="container">
+        <!-- Royal Header -->
+        <header class="header royal-header">
+            <div class="header-ornament top-ornament">✦ ✦ ✦</div>
+            <div class="header-content">
+                <h1 class="royal-title">✨ VERITAS ✨</h1>
+                <p class="crown-subtitle">THE ROYAL FACT-CHECKER</p>
+                <p class="subtitle">Divine Truth Through Artificial Intelligence | Multi-Language Support</p>
+            </div>
+            <div class="header-ornament bottom-ornament">✦ ✦ ✦</div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Royal Input Section -->
+            <section class="input-section">
+                <div class="card royal-card-premium">
+                    <div class="card-ornament">⬥</div>
+                    <h2 class="card-title">📜 SUBMIT YOUR INQUIRY</h2>
+                    <p class="card-subtitle">Enter the text you wish to verify for authenticity</p>
+                    
+                    <textarea 
+                        id="newsInput" 
+                        class="input-box royal-input" 
+                        placeholder="Paste the news text or statement here...
+
+Example: 'Breaking news about scientific discovery...'
+அறிவியல் செய்திகள்...
+वैज्ञानिक समाचार..."
+                        rows="8"
+                    ></textarea>
+
+                    <button id="checkBtn" class="btn btn-royal royal-primary">
+                        <span class="btn-text">🔮 VERIFY AUTHENTICITY</span>
+                        <span class="spinner hidden" id="spinner"></span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Royal Results Section -->
+            <section class="results-section hidden" id="resultsSection">
+                <div class="card royal-card-premium">
+                    <div class="card-ornament">⬥</div>
+                    <h2 class="card-title">⚜️ DIVINE VERDICT</h2>
+
+                    <!-- Prediction Result with Royal Design -->
+                    <div class="result-box royal-result-box" id="resultBox">
+                        <div class="prediction-result royal-prediction" id="predictionResult"></div>
+                        <div class="confidence-meter royal-confidence">
+                            <p class="confidence-label">CONFIDENCE COEFFICIENT</p>
+                            <div class="confidence-bar royal-confidence-bar">
+                                <div class="confidence-fill royal-fill" id="confidenceFill"></div>
+                            </div>
+                            <p class="confidence-text royal-confidence-text" id="confidenceText"></p>
+                        </div>
+                    </div>
+
+                    <!-- Royal Details -->
+                    <div class="details-section royal-details">
+                        <div class="detail-item royal-detail">
+                            <label class="detail-label">🌍 PRIMARY LANGUAGE:</label>
+                            <span id="language" class="detail-value">-</span>
+                        </div>
+                        <div class="detail-item royal-detail">
+                            <label class="detail-label">📖 ANALYSIS EXCERPT:</label>
+                            <span id="processedText" class="processed-text royal-excerpt">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Royal Similar Facts -->
+                    <div class="facts-section royal-facts">
+                        <h3 class="facts-title">📚 CORROBORATING EVIDENCE</h3>
+                        <div id="factsList" class="facts-list royal-facts-list">
+                            <p class="no-facts">Loading verified facts...</p>
+                        </div>
+                    </div>
+
+                    <!-- Royal Action Buttons -->
+                    <div class="button-group royal-button-group">
+                        <button id="resetBtn" class="btn btn-royal royal-secondary">↻ NEW INQUIRY</button>
+                        <button id="shareBtn" class="btn btn-royal royal-outline">📤 SHARE VERDICT</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Royal Info Section -->
+            <section class="info-section">
+                <div class="card royal-card-premium">
+                    <div class="card-ornament">⬥</div>
+                    <h3 class="card-title">⚜️ THE VERIFICATION PROCESS</h3>
+                    <div class="steps royal-steps">
+                        <div class="step royal-step">
+                            <span class="step-num royal-step-num">I</span>
+                            <div class="step-content">
+                                <strong>LINGUISTIC ANALYSIS</strong>
+                                <p>Identifies language and performs sacred translation</p>
+                            </div>
+                        </div>
+                        <div class="step royal-step">
+                            <span class="step-num royal-step-num">II</span>
+                            <div class="step-content">
+                                <strong>TEXTUAL REFINEMENT</strong>
+                                <p>Purifies and processes the statement with precision</p>
+                            </div>
+                        </div>
+                        <div class="step royal-step">
+                            <span class="step-num royal-step-num">III</span>
+                            <div class="step-content">
+                                <strong>SEMANTIC INQUIRY</strong>
+                                <p>Searches divine archives for correlated evidence</p>
+                            </div>
+                        </div>
+                        <div class="step royal-step">
+                            <span class="step-num royal-step-num">IV</span>
+                            <div class="step-content">
+                                <strong>ROYAL JUDGMENT</strong>
+                                <p>Supreme AI bestows final verdict on authenticity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Royal Footer -->
+        <footer class="footer royal-footer">
+            <p class="footer-crown">⚜️ Powered by Royal AI Intelligence ⚜️</p>
+            <p class="footer-text">Disclaimer: This system applies advanced AI analysis for informational purposes. Always consult official sources for verification.</p>
+        </footer>
+    </div>
+
+    <!-- Error Toast -->
+    <div id="errorToast" class="toast hidden"></div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

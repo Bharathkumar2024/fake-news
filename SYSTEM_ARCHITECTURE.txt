@@ -1,0 +1,132 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                    SYSTEM ARCHITECTURE DIAGRAM                            ║
+║           Automated Fact-Checker for Vernacular News                      ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+
+███████████████████████████████████████████████████████████████████████████
+█ TRAINING PHASE (Offline - Run Once)                                     █
+███████████████████████████████████████████████████████████████████████████
+
+    ┌─────────────────────────────────────────────────────────┐
+    │            DATASETS (Your CSV files)                     │
+    │   • Fake.csv (10,000s fake news articles)               │
+    │   • True.csv (10,000s real news articles)               │
+    └────────────────┬────────────────────────────────────────┘
+                     │
+                     ↓
+    ┌─────────────────────────────────────────────────────────┐
+    │    DATA PIPELINE (notebooks/Step_1-3)                    │
+    │  ┌──────────────────────────────────────────────────┐   │
+    │  │ 1. Load & Combine Data → combined_data.csv       │   │
+    │  │ 2. Language Detection → Detect & Translate       │   │
+    │  │ 3. Text Cleaning → Clean text (remove URLs, etc) │   │
+    │  │ 4. Store cleaned version → cleaned_data.csv      │   │
+    │  └──────────────────────────────────────────────────┴───│
+    └────────────────┬────────────────────────────────────────┘
+
+
+EMBEDDING & INDEXING PHASE
+                     │
+                     ↓
+    ┌─────────────────────────────────────────────────────────┐
+    │    EMBEDDING GENERATION (notebooks/Step_4)              │
+    │  ┌──────────────────────────────────────────────────┐   │
+    │  │ Sentence Transformers (BERT)                     │   │
+    │  │ • Converts text → 384-dimensional vectors       │   │
+    │  │ • Captures semantic meaning                      │   │
+    │  │ • Output: embeddings.pkl (N x 384 matrix)        │   │
+    │  └──────────────────────────────────────────────────┴───│
+    └────────────────┬────────────────────────────────────────┘
+                     │
+          ┌──────────┴──────────┐
+          ↓                     ↓
+    ┌──────────────┐     ┌─────────────────┐
+    │ FAISS INDEX  │     │ ML CLASSIFIER   │
+    │ (Step_5)     │     │ (Step_6)        │
+    │              │     │                 │
+    │ • Vector db  │     │ • Logistic Reg  │
+    │ • Fast search│     │ • Train/Test    │
+    │ • K-NN lookup│     │ • Predict       │
+    └──────┬───────┘     └────────┬────────┘
+           │                      │
+           └──────────┬───────────┘
+                      │
+                      ↓
+          ✅ READY FOR PRODUCTION
+
+
+███████████████████████████████████████████████████████████████████████████
+█ PREDICTION PHASE (Online - Real-time)                                   █
+███████████████████████████████████████████████████████████████████████████
+
+Step 1: User enters text in browser
+        ↓
+Step 2: JavaScript sends via AJAX to Flask API
+        ↓
+Step 3: Flask receives and validates
+        ↓
+Step 4: Language Detection (detect lang if not English)
+        ↓
+Step 5: Translation (if Tamil/Hindi, translate to English)
+        ↓
+Step 6: Text Cleaning (remove URLs, stopwords, etc)
+        ↓
+Step 7: Embedding Generation (convert to 384-dim vector)
+        ↓
+Step 8: FAISS Search (find 5 similar facts)
+        ↓
+Step 9: ML Model Prediction (output Real/Fake + confidence)
+        ↓
+Step 10: Format results as JSON
+        ↓
+Step 11: Send back to frontend JavaScript
+        ↓
+Step 12: Display beautiful results in browser
+        ↓
+User sees: ✅ Likely Real (87%) with similar facts
+
+
+███████████████████████████████████████████████████████████████████████████
+█ KEY COMPONENTS                                                            █
+███████████████████████████████████████████████████████████████████████████
+
+WEB INTERFACE:
+   → web_app/html/index.html (Beautiful responsive UI)
+   → web_app/html/css/style.css (Modern styling)
+   → web_app/html/js/script.js (Interactive frontend)
+
+BACKEND API:
+   → web_app/backend/app.py (Flask REST API)
+   → /api/health (Health check)
+   → /api/check-fact (Single prediction)
+   → /api/check-facts-batch (Multiple predictions)
+
+MACHINE LEARNING:
+   → src/language_detector.py (Language detection + translation)
+   → src/text_processor.py (Text cleaning + preprocessing)
+   → src/embedder.py (BERT embeddings)
+   → src/fact_checker.py (Main prediction orchestration)
+
+TRAINED MODELS:
+   → models/model.pkl (Logistic Regression classifier)
+   → models/faiss_index.pkl (Vector similarity search)
+   → models/facts.pkl (Knowledge database)
+   → models/embedder.pkl (Pre-trained BERT model)
+
+CONFIGURATION:
+   → config.py (All settings in one place)
+
+TRAINING SCRIPTS:
+   → notebooks/Step_0_Install.py (Dependencies)
+   → notebooks/Step_1_Load_Data.py (Load datasets)
+   → notebooks/Step_2_Language_Detection.py (Language)
+   → notebooks/Step_3_Text_Cleaning.py (Cleaning)
+   → notebooks/Step_4_Embeddings.py (Embeddings)
+   → notebooks/Step_5_FAISS_Index.py (Vector index)
+   → notebooks/Step_6_Train_Model.py (ML training)
+   → notebooks/Step_7_Evaluation.py (Performance)
+   → notebooks/Step_8_Save_Models.py (Save all)
+
+
+Made with ❤️ for better informed societies
