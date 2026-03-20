@@ -10,12 +10,6 @@
       "destination": "/web_app/html/index.html"
     }
   ],
-  "functions": {
-    "api/index.py": {
-      "memory": 2048,
-      "maxDuration": 30
-    }
-  },
   "env": {
     "FLASK_ENV": "production",
     "PYTHONIOENCODING": "utf-8"
