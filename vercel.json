@@ -1,5 +1,4 @@
 {
-  "outputDirectory": "web_app/html",
   "rewrites": [
     {
       "source": "/api/(.*)",
