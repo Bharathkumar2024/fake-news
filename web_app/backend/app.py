@@ -22,9 +22,9 @@ from src.utils import ensure_models_exist, get_project_stats
 web_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 app = Flask(
     __name__,
-    static_folder=os.path.join(web_dir, 'html'),
+    static_folder=os.path.join(web_dir, '..', 'public'),
     static_url_path='',
-    template_folder=os.path.join(web_dir, 'html')
+    template_folder=os.path.join(web_dir, '..', 'public')
 )
 
 # Enable CORS if available
@@ -50,14 +50,14 @@ print("=" * 60 + "\n")
 def serve_index():
     """Serve the main HTML page"""
     from flask import send_from_directory
-    html_dir = os.path.join(web_dir, 'html')
+    html_dir = os.path.join(web_dir, '..', 'public')
     return send_from_directory(html_dir, 'index.html')
 
 @app.route('/<path:filename>')
 def serve_static(filename):
     """Serve static files (CSS, JS, etc.)"""
     from flask import send_from_directory
-    html_dir = os.path.join(web_dir, 'html')
+    html_dir = os.path.join(web_dir, '..', 'public')
     return send_from_directory(html_dir, filename)
 
 # Check models (but don't block startup)
@@ -222,11 +222,11 @@ def internal_error(error):
 @app.route('/')
 def serve_app():
     """Serve the main HTML app"""
-    html_path = os.path.join(os.path.dirname(__file__), '..', 'html', 'index.html')
+    html_path = os.path.join(os.path.dirname(__file__), '..', '..', 'public', 'index.html')
     if os.path.exists(html_path):
         with open(html_path, 'r', encoding='utf-8') as f:
             return f.read()
-    return "App not found", 404
+    return f"App not found at {html_path}", 404
 
 if __name__ == '__main__':
     print(f"Server starting...")
