@@ -19,16 +19,33 @@ except ImportError:
 class FactChecker:
     def __init__(self):
         """Initialize fact-checker with saved models"""
+        self.model = None
+        self.index = None
+        self.facts = None
+        
         try:
-            self.model = pickle.load(open(config.MODEL_PATH, 'rb'))
-            self.index = pickle.load(open(config.FAISS_INDEX_PATH, 'rb'))
-            self.facts = pickle.load(open(config.FACTS_PATH, 'rb'))
-            print("All models loaded successfully")
+            # Only try loading if files exist and we are not in a restricted environment
+            if os.path.exists(config.MODEL_PATH):
+                self.model = pickle.load(open(config.MODEL_PATH, 'rb'))
+            
+            # Loading a FAISS index from pickle requires the faiss module to be installed
+            if os.path.exists(config.FAISS_INDEX_PATH):
+                try:
+                    import faiss
+                    self.index = pickle.load(open(config.FAISS_INDEX_PATH, 'rb'))
+                except ImportError:
+                    print("FAISS not installed, skipping index loading")
+            
+            if os.path.exists(config.FACTS_PATH):
+                self.facts = pickle.load(open(config.FACTS_PATH, 'rb'))
+                
+            if self.model and self.index:
+                print("All models loaded successfully")
+            else:
+                print("Running in limited mode (some components missing)")
         except Exception as e:
-            print(f"❌ Model loading error: {e}")
-            self.model = None
-            self.index = None
-            self.facts = None
+            print(f"Model loading error: {e}")
+
 
     def check_fact(self, user_text):
         """
